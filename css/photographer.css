@@ -75,7 +75,7 @@ form input {
     border-radius: 5px;
 }
 
-/* Card Photographer */
+/* Card Photographers */
 .photographer_link{
     display: flex;
     flex-direction: column;
@@ -115,3 +115,5 @@ form input {
     color: #757575;
     margin: 0;
 }
+
+/* Pages photographer */
