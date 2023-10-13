@@ -30,12 +30,14 @@ async function getPicturesByPhotographerId(id) {
 function displayData(photographer) {
     const container = document.querySelector(".photograph-header");
 
-    const photographerModel = thisPhotographerTemplate(photographer);
-    const userCardDOM = photographerModel.getUserCardDOM();
-
-    container.appendChild(userCardDOM);
-
-    return (userCardDOM);
+    if(photographer){
+        const photographerModel = thisPhotographerTemplate(photographer);
+        const userCardDOM = photographerModel.getUserCardDOM();
+    
+        container.appendChild(userCardDOM);
+    
+        return (userCardDOM);
+    }
 }
 
 function displayPictures(pictures) {
@@ -54,11 +56,13 @@ function displayPictures(pictures) {
 }
 
 function displayTarifJournalier(photographer) {
-    const popupTarif = document.querySelector(".popup-tarif");
-    const price = document.createElement("p");
-    price.textContent = photographer.price + "€/jour";
-
-    popupTarif.appendChild(price);
+    if(photographer){
+        const popupTarif = document.querySelector(".popup-tarif");
+        const price = document.createElement("p");
+        price.textContent = photographer.price + "€/jour";
+    
+        popupTarif.appendChild(price);
+    }
 }
 
 async function init() {

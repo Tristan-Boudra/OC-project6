@@ -2,8 +2,9 @@ export function thisPhotographerTemplate(data) {
     if(data){
         const { name, portrait, city, country, tagline, price } = data;
         const picture = `assets/photographers/${portrait}`;
-    
+        
         function getUserCardDOM() {
+
             const header = document.createElement( 'div' );
             header.setAttribute("class", "this_photographer_container");
 
@@ -28,16 +29,20 @@ export function thisPhotographerTemplate(data) {
             
             
             // Div contains contact button
-
             const divContact = document.createElement( 'div' );
             const button = document.createElement( 'button' );
             button.textContent = "Contactez-moi";
             button.setAttribute("class", "contact_button");
-            button.setAttribute("onclick", "displayModal()");
+            button.addEventListener('click', function() {
+                const modal = document.getElementById("contact_modal");
+                modal.style.display = "block";
+                var modalOverlay = document.getElementById("modal-overlay");
+                modalOverlay.style.display = "block";
+            });
             divContact.appendChild(button)
 
 
-            // Div contains picuture
+            // Div contains picture
             const divPicture = document.createElement( 'div' );
     
             const img = document.createElement( 'img' );

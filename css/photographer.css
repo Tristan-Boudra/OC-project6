@@ -1,3 +1,19 @@
+main{
+    position: relative;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 10;
+    display: none;
+  }
+  
+
 #contact_modal {
     display: none;
 }
@@ -22,6 +38,10 @@
 }
 
 .modal {
+    position: absolute;
+    top: 100px;
+    left: 25%;
+    z-index: 15;
     border-radius: 5px;
     background-color: #DB8876;
     width: 50%;
@@ -73,6 +93,16 @@ form input {
     height: 68px;
     border: none;
     border-radius: 5px;
+}
+
+.contact_success{
+    display: none;
+}
+
+.contact_label_success{
+    color: green;
+    font-size: 36px;
+    font-weight: bold;
 }
 
 /* Card Photographers */

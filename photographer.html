@@ -8,6 +8,7 @@
     <title>Fisheye - photographe </title>
   </head>
   <body>
+    <div class="modal-overlay" id="modal-overlay"></div>
     <header>
       <a href="index.html">
         <img src="assets/images/logo.png" class="logo" alt="fisheye logo"/>
@@ -32,14 +33,23 @@
 			<div class="modal">
 				<header>
           <h2>Contactez-moi</h2>
-          <img src="assets/icons/close.svg" onclick="closeModal()" />
+          <img src="assets/icons/close.svg" class="closeForm" alt="close" />
         </header>
-				<form>
+				<form class="contact_form" action="#" method="post">
+          <div class="contact_success">
+            <p class="contact_label_success">Votre formmualaire a été correctement envoyer</p>
+          </div>
 					<div>
-						<label>Prénom</label>
-						<input />
+						<label for="name" class="contact_name">Prénom</label>
+            <input type="text" id="name" class="contact_name" />
+            <label for="lastname" class="contact_lastname">Nom</label>
+            <input type="text" id="lastname" class="contact_lastname" />
+            <label for="email" class="contact_email">Email</label>
+            <input type="text" id="email" class="contact_email" />
+            <label for="message" class="contact_message">Votre message</label>
+            <input type="text" id="message" class="contact_message" />
 					</div>
-          <button class="contact_button">Envoyer</button>
+          <button type="submit" class="contact_button">Envoyer</button>
 				</form>
 			</div>
 		</div>
