@@ -59,15 +59,50 @@ function displayPictures(pictures) {
   });
 }
 
-function displayTarifJournalier(photographer) {
-  if (photographer) {
+function displayTarifJournalier(photographer, pictures) {
+  if (photographer && pictures) {
     const popupTarif = document.querySelector(".popup-tarif");
     const price = document.createElement("p");
     price.textContent = photographer.price + "€/jour";
 
+    let allLikes = [];
+    for (const picture of pictures) {
+      allLikes.push(picture.likes);
+    }
+    let likes = allLikes.reduce((a, b) => a + b, 0);
+
+    const containerLikes = document.createElement('div');
+    containerLikes.setAttribute("class", "container-likes");
+    let numberLikes = document.createElement("p");
+    numberLikes.setAttribute("class", "all-likes");
+    numberLikes.textContent = likes;
+    const iconHeart = document.createElement("i");
+    iconHeart.setAttribute("class", "fa-regular fa-heart fas");
+
+    containerLikes.appendChild(numberLikes);
+    containerLikes.appendChild(iconHeart)
+
     popupTarif.appendChild(price);
+    popupTarif.appendChild(containerLikes);
   }
 }
+
+// async function picturesCarousel() {
+//   const carousel = document.querySelector(".pictures-modal");
+//   const ul = document.createElement("ul");
+//   ul.setAttribute("class", "list_pictures_modal");
+//   const li = document.createElement("li");
+//   li.setAttribute("class", "picture_modal");
+
+//   const allPictures = await getPicturesByPhotographerId(id);
+//   allPictures.forEach((picture) => {
+//     const pictureDOM = pictureFactory.createPicture(picture);
+//     li.appendChild(pictureDOM);
+//     ul.appendChild(li);
+//     carousel.appendChild(ul);
+//   });
+// }
+
 
 async function init() {
   // Récupère les datas du photographe
@@ -80,7 +115,18 @@ async function init() {
 
   // Affiche le nombre de like et le tarif journalier
   const pricePhotographer = await getPhotographer(id);
-  displayTarifJournalier(pricePhotographer);
+  const likes = await getPicturesByPhotographerId(id);
+  displayTarifJournalier(pricePhotographer, likes);
+
+  // Affiche le modal des photos
+  //   const openPictureModal = document.querySelector(".pictures-modal");
+  //   openPictureModal.addEventListener("click", function (event) {
+  //     event.preventDefault();
+  //     openPicturesModal();
+  //   });
+
+  //   // Affiche le carousel de photos
+  //   await picturesCarousel();
 }
 
 init();

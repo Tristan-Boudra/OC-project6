@@ -1,4 +1,6 @@
 export class PictureFactory {
+  alreadyLiked = [];
+
   createPicture(data) {
     if (data) {
       const { id, photographerId, title, image, video, likes, date, price } =
@@ -30,9 +32,10 @@ export class PictureFactory {
     img.setAttribute("src", picture);
     img.setAttribute("alt", title);
     img.setAttribute("class", "picture");
+    // img.setAttribute("onClick", "this.openPicturesModal()");
 
     li.appendChild(img);
-    li.appendChild(this.createInformationPicture(title, likes, heart));
+    li.appendChild(this.createInformationPicture(title, likes, heart, id));
 
     return li;
   }
@@ -52,12 +55,33 @@ export class PictureFactory {
     video.appendChild(source);
 
     li.appendChild(video);
-    li.appendChild(this.createInformationPicture(title, likes, heart));
+    li.appendChild(this.createInformationPicture(title, likes, heart, id));
 
     return li;
   }
 
-  createInformationPicture(title, likes, heart) {
+  updateLikesDisplay(id, addLike) {
+    const numberLikes = document.querySelector(".all-likes");
+    const currentLikes = parseInt(numberLikes.textContent);
+
+    if (addLike) {
+      if (!this.alreadyLiked.includes(id)) {
+        numberLikes.textContent = currentLikes + 1;
+        this.alreadyLiked.push(id);
+      }
+    } else {
+      if (this.alreadyLiked.includes(id)) {
+        numberLikes.textContent = currentLikes - 1;
+        const index = this.alreadyLiked.indexOf(id);
+
+        if (index !== -1) {
+          this.alreadyLiked.splice(index, 1);
+        }
+      }
+    }
+  }
+
+  createInformationPicture(title, likes, heart, id) {
     const pictureInfo = document.createElement("div");
     pictureInfo.setAttribute("class", "picture_info");
 
@@ -68,15 +92,43 @@ export class PictureFactory {
 
     const containerLikes = document.createElement("div");
     containerLikes.setAttribute("class", "picture_likes_container");
-    const imgHeart = document.createElement("img");
-    imgHeart.setAttribute("src", heart);
+    const iconHeart = document.createElement("i");
     const like = document.createElement("p");
     like.textContent = likes;
     like.setAttribute("class", "picture_likes");
+    iconHeart.setAttribute("class", "fa-regular fa-heart");
+    iconHeart.addEventListener("click", () => {
+      if (iconHeart.classList.contains("far")) {
+        iconHeart.classList.remove("far");
+        iconHeart.classList.add("fas");
+        iconHeart.style.color = "#901C1C";
+        like.classList.remove("disLiked");
+        like.classList.add("liked");
+
+        const newLikes = likes + 1;
+        like.textContent = newLikes;
+        const addLike = true;
+        this.updateLikesDisplay(id, addLike);
+      } else {
+        iconHeart.classList.remove("fas");
+        iconHeart.classList.add("far");
+        like.textContent = likes;
+        like.classList.remove("liked");
+        like.classList.add("disLiked");
+        this.updateLikesDisplay(id);
+      }
+    });
     containerLikes.appendChild(like);
-    containerLikes.appendChild(imgHeart);
+    containerLikes.appendChild(iconHeart);
     pictureInfo.appendChild(containerLikes);
 
     return pictureInfo;
   }
+
+  //   openPicturesModal() {
+  //     const modal = document.getElementById("pictures_modal");
+  //     modal.style.display = "block";
+  //     var modalOverlay = document.getElementById("modal-overlay");
+  //     modalOverlay.style.display = "block";
+  //   }
 }

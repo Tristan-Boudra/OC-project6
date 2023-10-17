@@ -2,19 +2,29 @@
 <html>
   <head>
     <link href="css/style.css" rel="stylesheet" type="text/css" />
-    <meta charset="utf-8">
-    <link rel="icon" type="image/png" href="assets/favicon.png">
-    <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
-    <title>Fisheye - photographe </title>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/png" href="assets/favicon.png" />
+    <link
+      href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+      integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <title>Fisheye - photographe</title>
   </head>
   <body>
     <div class="modal-overlay" id="modal-overlay"></div>
     <header>
       <a href="index.html">
-        <img src="assets/images/logo.png" class="logo" alt="fisheye logo"/>
+        <img src="assets/images/logo.png" class="logo" alt="fisheye logo" />
       </a>
     </header>
-    <main id="main">
+    <main id="main" aria-hidden="false">
       <div class="photograph-header"></div>
       <section class="pictures">
         <div class="trier">
@@ -26,36 +36,44 @@
           </select>
         </div>
         <div class="allPictures"></div>
-        <div class="popup-tarif"></div>
+        <div class="popup-tarif">
+        </div>
       </section>
     </main>
-    <div id="contact_modal">
-			<div class="modal">
-				<header>
-          <h2>Contactez-moi</h2>
-          <img src="assets/icons/close.svg" class="closeForm" alt="close" />
-        </header>
-				<form class="contact_form" action="#" method="post">
-          <div class="contact_success">
-            <p class="contact_label_success">Votre formmualaire a été correctement envoyer</p>
-          </div>
-					<div>
-						<label for="name" class="contact_name">Prénom</label>
-            <input type="text" id="name" class="contact_name" />
-            <label for="lastname" class="contact_lastname">Nom</label>
-            <input type="text" id="lastname" class="contact_lastname" />
-            <label for="email" class="contact_email">Email</label>
-            <input type="text" id="email" class="contact_email" />
-            <label for="message" class="contact_message">Votre message</label>
-            <input type="text" id="message" class="contact_message" />
-					</div>
-          <button type="submit" class="contact_button">Envoyer</button>
-				</form>
-			</div>
-		</div>
+    <div class="pictures-modal"></div>
+    <div
+      id="contact_modal"
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-hidden="true"
+      aria-describedby="Modale de contact"
+    >
+      <header>
+        <h2>Contactez-moi</h2>
+        <img src="assets/icons/close.svg" class="closeForm" alt="close" />
+      </header>
+      <form class="contact_form" action="#" method="post">
+        <div class="contact_success">
+          <p class="contact_label_success">
+            Votre formmualaire a été correctement envoyer
+          </p>
+        </div>
+        <div>
+          <label for="name" class="contact_name">Prénom</label>
+          <input type="text" id="name" class="contact_name" />
+          <label for="lastname" class="contact_lastname">Nom</label>
+          <input type="text" id="lastname" class="contact_lastname" />
+          <label for="email" class="contact_email">Email</label>
+          <input type="text" id="email" class="contact_email" />
+          <label for="message" class="contact_message">Votre message</label>
+          <input type="text" id="message" class="contact_message" />
+        </div>
+        <button type="submit" class="contact_button">Envoyer</button>
+      </form>
+    </div>
     <script type="module" src="scripts/pages/photographer.js"></script>
     <script type="module" src="scripts/templates/thisPhotographer.js"></script>
     <script type="module" src="scripts/utils/contactForm.js"></script>
-    <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
   </body>
 </html>
