@@ -48,15 +48,48 @@ function displayData(photographer) {
 }
 
 function displayPictures(pictures) {
+  const selectElement = document.getElementById("tier-by");
+
+  // Tri par défaut au chargement de la page
+  pictures.sort((a, b) => b.likes - a.likes);
+  displayPictureBySort(pictures);
+
+  selectElement.addEventListener("change", function() {
+    const selectedOptions = this.value;
+    switch (selectedOptions) {
+      case "Populaire":
+        pictures.sort((a, b) => b.likes - a.likes);
+        displayPictureBySort(pictures);
+        break;
+      case "Date":
+        pictures.forEach(picture => {
+          picture.date = new Date(picture.date);
+        });
+        pictures.sort((a, b) => b.date.getTime() - a.date.getTime());
+        displayPictureBySort(pictures);
+        console.log(pictures);
+        break;
+      case "Titre":
+        pictures.sort((a, b) => a.title.localeCompare(b.title));
+        displayPictureBySort(pictures);
+        break;
+      default:
+        console.log("Option non disponible");
+    }
+  });
+}
+
+function displayPictureBySort(pictures) {
   const containerPictures = document.querySelector(".allPictures");
+  containerPictures.innerHTML = "";
   const ul = document.createElement("ul");
   ul.setAttribute("class", "list_pictures");
 
-  pictures.forEach((picture) => {
-    const pictureDOM = pictureFactory.createPicture(picture);
+  pictures.forEach((pictures) => {
+    const pictureDOM = pictureFactory.createPicture(pictures);
     ul.appendChild(pictureDOM);
-    containerPictures.appendChild(ul);
   });
+  containerPictures.appendChild(ul);
 }
 
 function displayTarifJournalier(photographer, pictures) {
