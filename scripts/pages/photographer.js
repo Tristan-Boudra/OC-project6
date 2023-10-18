@@ -54,7 +54,7 @@ function displayPictures(pictures) {
   pictures.sort((a, b) => b.likes - a.likes);
   displayPictureBySort(pictures);
 
-  selectElement.addEventListener("change", function() {
+  selectElement.addEventListener("change", function () {
     const selectedOptions = this.value;
     switch (selectedOptions) {
       case "Populaire":
@@ -62,12 +62,11 @@ function displayPictures(pictures) {
         displayPictureBySort(pictures);
         break;
       case "Date":
-        pictures.forEach(picture => {
+        pictures.forEach((picture) => {
           picture.date = new Date(picture.date);
         });
         pictures.sort((a, b) => b.date.getTime() - a.date.getTime());
         displayPictureBySort(pictures);
-        console.log(pictures);
         break;
       case "Titre":
         pictures.sort((a, b) => a.title.localeCompare(b.title));
@@ -85,8 +84,17 @@ function displayPictureBySort(pictures) {
   const ul = document.createElement("ul");
   ul.setAttribute("class", "list_pictures");
 
-  pictures.forEach((pictures) => {
-    const pictureDOM = pictureFactory.createPicture(pictures);
+  const mediaItems = [];
+  pictures.forEach((picture) => {
+    if (picture.video) mediaItems.push({ type: "video", src: picture.video, title: picture.title });
+    else if(picture.image) mediaItems.push({ type: "photo", src: picture.image, title: picture.title });
+    
+    const pictureDOM = pictureFactory.createPicture(picture);
+    const img = pictureDOM.querySelector('.picture');
+    img.addEventListener("click", () => {
+      console.log(mediaItems);
+      mediaLightbox(picture, mediaItems);
+    });
     ul.appendChild(pictureDOM);
   });
   containerPictures.appendChild(ul);
@@ -104,7 +112,7 @@ function displayTarifJournalier(photographer, pictures) {
     }
     let likes = allLikes.reduce((a, b) => a + b, 0);
 
-    const containerLikes = document.createElement('div');
+    const containerLikes = document.createElement("div");
     containerLikes.setAttribute("class", "container-likes");
     let numberLikes = document.createElement("p");
     numberLikes.setAttribute("class", "all-likes");
@@ -113,29 +121,99 @@ function displayTarifJournalier(photographer, pictures) {
     iconHeart.setAttribute("class", "fa-regular fa-heart fas");
 
     containerLikes.appendChild(numberLikes);
-    containerLikes.appendChild(iconHeart)
+    containerLikes.appendChild(iconHeart);
 
     popupTarif.appendChild(price);
     popupTarif.appendChild(containerLikes);
   }
 }
 
-// async function picturesCarousel() {
-//   const carousel = document.querySelector(".pictures-modal");
-//   const ul = document.createElement("ul");
-//   ul.setAttribute("class", "list_pictures_modal");
-//   const li = document.createElement("li");
-//   li.setAttribute("class", "picture_modal");
+function mediaLightbox(picture, mediaItems) {
+  const modal = document.createElement("div");
+  modal.setAttribute("class", "lightbox");
 
-//   const allPictures = await getPicturesByPhotographerId(id);
-//   allPictures.forEach((picture) => {
-//     const pictureDOM = pictureFactory.createPicture(picture);
-//     li.appendChild(pictureDOM);
-//     ul.appendChild(li);
-//     carousel.appendChild(ul);
-//   });
-// }
+  const close = document.createElement("img");
+  close.setAttribute("src", "assets/icons/close-red.png");
+  close.setAttribute("class", "close");
+  close.addEventListener("click", () => {
+    modal.remove();
+  });
 
+  const containerMedia = document.createElement("div");
+  containerMedia.setAttribute("class", "container-media");
+
+  const containerPicture = document.createElement("div");
+  containerPicture.setAttribute("class", "container-picture");
+
+  const labelMedia = document.createElement("p");
+  labelMedia.textContent = picture.title;
+  labelMedia.setAttribute("class", "label-media");
+
+  const img = document.createElement("img");
+  img.setAttribute("id", picture.id);
+  img.setAttribute("class", "picture-lightbox");
+  img.setAttribute("src", `assets/images/${picture.image}`);
+  img.setAttribute("alt", picture.title);
+
+  const videoPlayer = document.createElement("video");
+  videoPlayer.setAttribute("controls", "");
+  videoPlayer.setAttribute("playsinline", "");
+  videoPlayer.setAttribute("class", "picture-lightbox");
+  videoPlayer.style.display = "none";
+
+  let currentIndex = mediaItems.findIndex((item) => item.src === picture.image);
+
+  const chevronLeft = document.createElement("img");
+  chevronLeft.setAttribute("src", "assets/icons/chevron-left.png");
+  chevronLeft.setAttribute("class", "chevron-left");
+  chevronLeft.addEventListener("click", () => {
+    let prevIndex = currentIndex - 1;
+    if (prevIndex < 0) prevIndex = mediaItems.length - 1;
+    
+    currentIndex = prevIndex;
+    displayMedia(currentIndex);
+  });
+
+  const chevronRight = document.createElement("img");
+  chevronRight.setAttribute("src", "assets/icons/chevron-right.png");
+  chevronRight.setAttribute("class", "chevron-right");
+  chevronRight.addEventListener("click", () => {
+    let nextIndex = currentIndex + 1;
+    if (nextIndex >= mediaItems.length) nextIndex = 0;
+    currentIndex = nextIndex;
+    displayMedia(currentIndex);
+  });
+
+  function displayMedia(index) {
+    const currentItem = mediaItems[index];
+    labelMedia.textContent = currentItem.title;
+
+    if (currentItem.type === "photo") {
+      img.style.display = "block";
+      videoPlayer.style.display = "none";
+      img.setAttribute("src", `assets/images/${currentItem.src}`);
+    } else if (currentItem.type === "video") {
+      img.style.display = "none";
+      videoPlayer.style.display = "block";
+      videoPlayer.src = `assets/images/${currentItem.src}`;
+      videoPlayer.play();
+    }
+  }
+
+  containerPicture.appendChild(labelMedia);
+  containerPicture.appendChild(img);
+  containerPicture.appendChild(videoPlayer);
+
+  containerMedia.appendChild(chevronLeft);
+  containerMedia.appendChild(containerPicture);
+  containerMedia.appendChild(chevronRight);
+
+  modal.appendChild(containerMedia);
+  modal.appendChild(close);
+  document.body.appendChild(modal);
+
+  displayMedia(currentIndex);
+}
 
 async function init() {
   // Récupère les datas du photographe
@@ -150,16 +228,6 @@ async function init() {
   const pricePhotographer = await getPhotographer(id);
   const likes = await getPicturesByPhotographerId(id);
   displayTarifJournalier(pricePhotographer, likes);
-
-  // Affiche le modal des photos
-  //   const openPictureModal = document.querySelector(".pictures-modal");
-  //   openPictureModal.addEventListener("click", function (event) {
-  //     event.preventDefault();
-  //     openPicturesModal();
-  //   });
-
-  //   // Affiche le carousel de photos
-  //   await picturesCarousel();
 }
 
 init();

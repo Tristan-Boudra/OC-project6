@@ -24,7 +24,7 @@ export class PictureFactory {
     }
   }
 
-  createImagePicture(picture, title, likes, id, heart) {
+  createImagePicture(picture, title, likes, id, heart, data) {
     const li = document.createElement("li");
     const img = document.createElement("img");
 
@@ -32,7 +32,6 @@ export class PictureFactory {
     img.setAttribute("src", picture);
     img.setAttribute("alt", title);
     img.setAttribute("class", "picture");
-    // img.setAttribute("onClick", "this.openPicturesModal()");
 
     li.appendChild(img);
     li.appendChild(this.createInformationPicture(title, likes, heart, id));
@@ -124,11 +123,4 @@ export class PictureFactory {
 
     return pictureInfo;
   }
-
-  //   openPicturesModal() {
-  //     const modal = document.getElementById("pictures_modal");
-  //     modal.style.display = "block";
-  //     var modalOverlay = document.getElementById("modal-overlay");
-  //     modalOverlay.style.display = "block";
-  //   }
 }

@@ -144,20 +144,60 @@
 }
 
 /* Carousel pictures */
-.pictures-modal {
-  display: none;
-}
-.list_pictures_modal {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  padding: 0;
-  gap: 95px;
+.lightbox{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  z-index: 10;
 }
 
-.list_pictures_modal li {
-  width: 1050px;
-  height: 900px;
-  list-style: none;
-  margin-bottom: 30px;
+.container-media{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.container-picture{
+  display: flex;
+  flex-direction: row;
+}
+
+.chevron-right, .chevron-left{
+  width: 96px;
+  height: 96px;
+}
+
+.label-media{
+  position: absolute;
+  bottom: 31px;
+  left: 29%;
+  font-size: 24px;
+  font-weight: 400;
+  color: #901c1c;
+}
+
+.picture-lightbox{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: 750px;
+  object-fit: cover;
+  border-radius: 15px;
+  z-index: 10;
+}
+
+.close{
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 42px;
+  height: 42px;
 }
