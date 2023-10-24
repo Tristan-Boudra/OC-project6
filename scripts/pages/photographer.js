@@ -19,6 +19,7 @@ async function getPhotographer(id) {
 	return photographer;
 }
 
+// Récupère les photos du photographe
 async function getPicturesByPhotographerId(id) {
 	const response = await fetch("data/photographers.json");
 	const data = await response.json();
@@ -33,6 +34,7 @@ async function getPicturesByPhotographerId(id) {
 	return photographerPictures;
 }
 
+// Affiche les infos (header) du photographe
 function displayData(photographer) {
 	const container = document.querySelector(".photograph-header");
 
@@ -46,6 +48,7 @@ function displayData(photographer) {
 	}
 }
 
+// Affiche les photos trier
 function displayPictures(pictures) {
 	const selectElement = document.getElementById("tier-by");
 	selectElement.setAttribute("aria-live", "polite");
@@ -80,6 +83,7 @@ function displayPictures(pictures) {
 	});
 }
 
+// Affiche les photos
 function displayPictureBySort(pictures) {
 	const containerPictures = document.querySelector(".allPictures");
 	containerPictures.innerHTML = "";
@@ -119,6 +123,7 @@ function displayPictureBySort(pictures) {
 	containerPictures.appendChild(ul);
 }
 
+// Affiche le tarif journalier
 function displayTarifJournalier(photographer, pictures) {
 	if (photographer && pictures) {
 		const popupTarif = document.querySelector(".popup-tarif");
@@ -147,6 +152,7 @@ function displayTarifJournalier(photographer, pictures) {
 	}
 }
 
+// Affiche la lightbox
 function mediaLightbox(picture, mediaItems) {
 	const modal = document.createElement("div");
 	modal.setAttribute("class", "lightbox");
@@ -263,6 +269,7 @@ function mediaLightbox(picture, mediaItems) {
 	document.addEventListener("keydown", handleKeyPress);
 }
 
+// Initialise la page
 async function init() {
 	// Récupère les datas du photographe
 	const photographer = await getPhotographer(id);

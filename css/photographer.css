@@ -146,4 +146,8 @@ form input {
     margin: 0;
 }
 
-/* Pages photographer */
+@media (max-width: 768px) {
+    .photograph-header{
+      height: max-content;
+    }
+  }

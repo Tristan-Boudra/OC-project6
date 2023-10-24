@@ -1,6 +1,7 @@
 export class PictureFactory {
 	alreadyLiked = [];
 
+	// Récupère les infos des medias
 	createPicture(data) {
 		if (data) {
 			const { id, title, image, video, likes } =
@@ -24,6 +25,7 @@ export class PictureFactory {
 		}
 	}
 
+	// Création des images avec les attributs
 	createImagePicture(picture, title, likes, id, heart) {
 		const li = document.createElement("li");
 		const img = document.createElement("img");
@@ -32,6 +34,7 @@ export class PictureFactory {
 		img.setAttribute("src", picture);
 		img.setAttribute("alt", title);
 		img.setAttribute("class", "picture");
+		img.setAttribute("tabindex", "0");
 
 		li.appendChild(img);
 		li.appendChild(this.createInformationPicture(title, likes, heart, id));
@@ -39,6 +42,7 @@ export class PictureFactory {
 		return li;
 	}
 
+	// Création des videos avec les attributs
 	createVideoPicture(picture, playerVideo, title, likes, id, heart) {
 		const li = document.createElement("li");
 
@@ -47,6 +51,7 @@ export class PictureFactory {
 		video.setAttribute("class", "picture");
 		video.setAttribute("controls", "");
 		video.setAttribute("playsinline", "");
+		video.setAttribute("tabindex", "0");
 
 		const source = document.createElement("source");
 		source.setAttribute("src", playerVideo);
@@ -59,6 +64,7 @@ export class PictureFactory {
 		return li;
 	}
 
+	// Mise à jour des likes
 	updateLikesDisplay(id, addLike) {
 		const numberLikes = document.querySelector(".all-likes");
 		const currentLikes = parseInt(numberLikes.textContent);
@@ -80,6 +86,7 @@ export class PictureFactory {
 		}
 	}
 
+	// Création des informations d'un media
 	createInformationPicture(title, likes, heart, id) {
 		const pictureInfo = document.createElement("div");
 		pictureInfo.setAttribute("class", "picture_info");

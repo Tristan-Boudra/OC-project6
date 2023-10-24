@@ -1,3 +1,7 @@
+/* eslint-disable no-inner-declarations */
+/* eslint-disable indent */
+
+// Template d'un photographe
 export function photographerTemplate(data) {
 	if(data){
 		const { name, portrait, city, country, tagline, price } = data;

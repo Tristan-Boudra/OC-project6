@@ -1,4 +1,5 @@
 export class PhotographerFactory {
+	// Récupère les infos du photographe pour le header
 	createPhotographer(data) {
 		if (data) {
 			const { name, portrait, city, country, tagline, price } = data;
@@ -17,6 +18,7 @@ export class PhotographerFactory {
 
 					// Div contains infos
 					const divInfo = document.createElement("div");
+					divInfo.setAttribute("class", "this_photographer_infos");
 
 					const h2 = document.createElement("h2");
 					h2.textContent = name;
