@@ -43,8 +43,19 @@ export class PhotographerFactory {
 					button.addEventListener("click", function () {
 						const modal = document.getElementById("contact_modal");
 						modal.style.display = "block";
+						modal.focus();
 						var modalOverlay = document.getElementById("modal-overlay");
 						modalOverlay.style.display = "block";
+
+						// Close modal with keypress enter
+						const close = document.querySelector(".closeForm");
+						close.addEventListener("keypress", (e) => {
+							if (e.key === "Enter") {
+								modal.style.display = "none";
+								var modalOverlay = document.getElementById("modal-overlay");
+								modalOverlay.style.display = "none";
+							}
+						});
 					});
 					divContact.appendChild(button);
 

@@ -4,8 +4,7 @@ export class PictureFactory {
 	// Récupère les infos des medias
 	createPicture(data) {
 		if (data) {
-			const { id, title, image, video, likes } =
-        data;
+			const { id, title, image, video, likes } = data;
 			const picture = `assets/images/${image}`;
 			const playerVideo = `assets/images/${video}`;
 			const heart = "assets/images/heart.svg";
@@ -79,9 +78,7 @@ export class PictureFactory {
 				numberLikes.textContent = currentLikes - 1;
 				const index = this.alreadyLiked.indexOf(id);
 
-				if (index !== -1) {
-					this.alreadyLiked.splice(index, 1);
-				}
+				if (index !== -1) this.alreadyLiked.splice(index, 1);
 			}
 		}
 	}
@@ -103,6 +100,7 @@ export class PictureFactory {
 		like.textContent = likes;
 		like.setAttribute("class", "picture_likes");
 		iconHeart.setAttribute("class", "fa-regular fa-heart");
+		iconHeart.setAttribute("tabindex", "0");
 		iconHeart.addEventListener("click", () => {
 			if (iconHeart.classList.contains("far")) {
 				iconHeart.classList.remove("far");
@@ -123,6 +121,9 @@ export class PictureFactory {
 				like.classList.add("disLiked");
 				this.updateLikesDisplay(id);
 			}
+		});
+		iconHeart.addEventListener("keypress", (e) => {
+			if (e.key === "Enter") iconHeart.click();
 		});
 		containerLikes.appendChild(like);
 		containerLikes.appendChild(iconHeart);

@@ -23,6 +23,7 @@ export function photographerTemplate(data) {
 			const link_photographer = document.createElement( "a" );
 			link_photographer.setAttribute("href", "photographer.html?id=" + data.id);
 			link_photographer.setAttribute("class", "photographer_link");
+			link_photographer.setAttribute("tabindex", "0");
 			link_photographer.appendChild(img);
 			link_photographer.appendChild(h2);
 				

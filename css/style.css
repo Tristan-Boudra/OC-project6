@@ -49,3 +49,28 @@ h1 {
     height: 200px;
     width: 200px;
 }
+
+@media (max-width: 1024px) {
+    .photographer_section {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .photographer_section {
+        grid-template-columns: 1fr;
+    }
+
+    header {
+        flex-direction: column;
+        margin-top: 20px;
+    }
+
+    .logo {
+        margin-left: 0;
+    }
+
+    header h1 {
+        margin-right: 0;
+    }
+}

@@ -92,16 +92,6 @@ function displayPictureBySort(pictures) {
 	ul.setAttribute("role", "list");
 	ul.setAttribute("aria-label", "Liste d'images");
 
-	ul.addEventListener("keydown", (event) => {
-		if (event.key === "ArrowDown") {
-			const nextItem = event.target.nextElementSibling;
-			if (nextItem) nextItem.focus();
-		} else if (event.key === "ArrowUp") {
-			const previousItem = event.target.previousElementSibling;
-			if (previousItem) previousItem.focus();
-		}
-	});
-
 	const firstItem = ul.querySelector("li:first-child .picture");
 	if (firstItem) firstItem.setAttribute("tabindex", "0");
 
@@ -112,11 +102,16 @@ function displayPictureBySort(pictures) {
 
 		const pictureDOM = pictureFactory.createPicture(picture);
 		const img = pictureDOM.querySelector(".picture");
-		const isVideo = picture.video !== undefined;
+		const isVideo = picture.video;
 		img.setAttribute("role", isVideo ? "link" : "link");
 		img.setAttribute("aria-label", `Voir ${isVideo ? "la vidéo" : "l'image"} "${picture.title}"`);
 		img.addEventListener("click", () => {
 			mediaLightbox(picture, mediaItems);
+		});
+		img.addEventListener("keypress", (e) => {
+			if (e.key === "Enter") {
+				mediaLightbox(picture, mediaItems);
+			}
 		});
 		ul.appendChild(pictureDOM);
 	});
