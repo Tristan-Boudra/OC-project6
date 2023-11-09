@@ -181,6 +181,7 @@ function mediaLightbox(picture, mediaItems) {
 	videoPlayer.setAttribute("controls", "");
 	videoPlayer.setAttribute("playsinline", "");
 	videoPlayer.setAttribute("class", "picture-lightbox");
+	videoPlayer.setAttribute("src", `assets/videos/${picture.video}`);
 	videoPlayer.style.display = "none";
 
 	let currentIndex = mediaItems.findIndex((item) => item.src === picture.image);

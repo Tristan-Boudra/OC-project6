@@ -6,7 +6,7 @@ export class PictureFactory {
 		if (data) {
 			const { id, title, image, video, likes } = data;
 			const picture = `assets/images/${image}`;
-			const playerVideo = `assets/images/${video}`;
+			const playerVideo = `assets/videos/${video}`;
 			const heart = "assets/images/heart.svg";
 
 			if (video) {
