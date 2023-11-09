@@ -92,11 +92,9 @@ function displayPictureBySort(pictures) {
 	ul.setAttribute("role", "list");
 	ul.setAttribute("aria-label", "Liste d'images");
 
-	const firstItem = ul.querySelector("li:first-child .picture");
-	if (firstItem) firstItem.setAttribute("tabindex", "0");
-
 	const mediaItems = [];
-	pictures.forEach((picture) => {
+
+	pictures.forEach((picture, index) => {
 		if (picture.video) mediaItems.push({ type: "video", src: picture.video, title: picture.title });
 		else if (picture.image) mediaItems.push({ type: "photo", src: picture.image, title: picture.title });
 
@@ -106,15 +104,16 @@ function displayPictureBySort(pictures) {
 		img.setAttribute("role", isVideo ? "link" : "link");
 		img.setAttribute("aria-label", `Voir ${isVideo ? "la vidéo" : "l'image"} "${picture.title}"`);
 		img.addEventListener("click", () => {
-			mediaLightbox(picture, mediaItems);
+			mediaLightbox(picture, mediaItems, index);
 		});
 		img.addEventListener("keypress", (e) => {
 			if (e.key === "Enter") {
-				mediaLightbox(picture, mediaItems);
+				mediaLightbox(picture, mediaItems, index);
 			}
 		});
 		ul.appendChild(pictureDOM);
 	});
+
 	containerPictures.appendChild(ul);
 }
 
@@ -148,14 +147,20 @@ function displayTarifJournalier(photographer, pictures) {
 }
 
 // Affiche la lightbox
-function mediaLightbox(picture, mediaItems) {
+function mediaLightbox(picture, mediaItems, index) {
 	const modal = document.createElement("div");
 	modal.setAttribute("class", "lightbox");
+	modal.setAttribute("aria-label", "Lightbox contenant un média");
+	modal.setAttribute("aria-labelledby", "label-media");
+	modal.setAttribute("role", "dialog");
+	modal.setAttribute("tabindex", "0");
 
 	const close = document.createElement("img");
 	close.setAttribute("src", "assets/icons/close-red.png");
 	close.setAttribute("class", "close");
 	close.setAttribute("tabindex", "0");
+	close.setAttribute("aria-label", "Fermer la lightbox");
+	close.setAttribute("title", "Fermer la lightbox");
 	close.addEventListener("click", () => {
 		modal.remove();
 		document.removeEventListener("keydown", handleKeyPress);
@@ -163,9 +168,11 @@ function mediaLightbox(picture, mediaItems) {
 
 	const containerMedia = document.createElement("div");
 	containerMedia.setAttribute("class", "container-media");
+	containerMedia.setAttribute("tabindex", "0");
 
 	const containerPicture = document.createElement("div");
 	containerPicture.setAttribute("class", "container-picture");
+	containerMedia.setAttribute("tabindex", "0");
 
 	const labelMedia = document.createElement("p");
 	labelMedia.textContent = picture.title;
@@ -176,19 +183,33 @@ function mediaLightbox(picture, mediaItems) {
 	img.setAttribute("class", "picture-lightbox");
 	img.setAttribute("src", `assets/images/${picture.image}`);
 	img.setAttribute("alt", picture.title);
+	img.setAttribute("tabindex", "0");
+	img.setAttribute("aria-label", `Voir l'image "${picture.title}"`);
+	img.setAttribute("title", picture.title);
+	img.setAttribute("role", "img");
+	img.focus();
 
 	const videoPlayer = document.createElement("video");
+	videoPlayer.setAttribute("tabindex", "0");
 	videoPlayer.setAttribute("controls", "");
 	videoPlayer.setAttribute("playsinline", "");
 	videoPlayer.setAttribute("class", "picture-lightbox");
 	videoPlayer.setAttribute("src", `assets/videos/${picture.video}`);
+	videoPlayer.setAttribute("aria-label", `Voir la video "${picture.title}"`);
+	videoPlayer.setAttribute("title", picture.title);
+	videoPlayer.setAttribute("role", "video");
 	videoPlayer.style.display = "none";
+	videoPlayer.focus();
 
 	let currentIndex = mediaItems.findIndex((item) => item.src === picture.image);
 
 	const chevronLeft = document.createElement("img");
 	chevronLeft.setAttribute("src", "assets/icons/chevron-left.png");
 	chevronLeft.setAttribute("class", "chevron-left");
+	chevronLeft.setAttribute("tabindex", "0");
+	chevronLeft.setAttribute("aria-label", "Voir l'image precedente");
+	chevronLeft.setAttribute("title", "Voir l'image precedente");
+	chevronLeft.setAttribute("role", "button");
 	chevronLeft.addEventListener("click", () => {
 		let prevIndex = currentIndex - 1;
 		if (prevIndex < 0) prevIndex = mediaItems.length - 1;
@@ -196,32 +217,64 @@ function mediaLightbox(picture, mediaItems) {
 		currentIndex = prevIndex;
 		displayMedia(currentIndex);
 	});
+	chevronLeft.addEventListener("keydown", (event) => {
+		if (event.key === "Enter") {
+			let prevIndex = currentIndex - 1;
+			if (prevIndex < 0) prevIndex = mediaItems.length - 1;
+	
+			currentIndex = prevIndex;
+			displayMedia(currentIndex);
+		}
+	});
+
 
 	const chevronRight = document.createElement("img");
 	chevronRight.setAttribute("src", "assets/icons/chevron-right.png");
 	chevronRight.setAttribute("class", "chevron-right");
+	chevronRight.setAttribute("tabindex", "0");
+	chevronRight.setAttribute("aria-label", "Voir l'image suivante");
+	chevronRight.setAttribute("title", "Voir l'image suivante");
+	chevronRight.setAttribute("role", "button");
 	chevronRight.addEventListener("click", () => {
 		let nextIndex = currentIndex + 1;
 		if (nextIndex >= mediaItems.length) nextIndex = 0;
 		currentIndex = nextIndex;
 		displayMedia(currentIndex);
 	});
+	chevronRight.addEventListener("keydown", (event) => {
+		if (event.key === "Enter") {
+			let nextIndex = currentIndex + 1;
+			if (nextIndex >= mediaItems.length) nextIndex = 0;
+			currentIndex = nextIndex;
+			displayMedia(currentIndex);
+		}
+	});
 
 	function displayMedia(index) {
 		const currentItem = mediaItems[index];
 		labelMedia.textContent = currentItem.title;
-
+	
 		if (currentItem.type === "photo") {
 			img.style.display = "block";
 			videoPlayer.style.display = "none";
 			img.setAttribute("src", `assets/images/${currentItem.src}`);
+			img.setAttribute("alt", currentItem.title);
+			img.setAttribute("aria-label", `Voir l'image "${currentItem.title}"`);
+			img.setAttribute("title", currentItem.title);
+			img.setAttribute("role", "img");
 		} else if (currentItem.type === "video") {
 			img.style.display = "none";
 			videoPlayer.style.display = "block";
-			videoPlayer.src = `assets/images/${currentItem.src}`;
+			videoPlayer.src = `assets/videos/${currentItem.src}`;
+			videoPlayer.setAttribute("alt", currentItem.title);
+			videoPlayer.setAttribute("aria-label", `Voir la video "${currentItem.title}"`);
+			videoPlayer.setAttribute("title", currentItem.title);
+			videoPlayer.setAttribute("role", "video");
 			videoPlayer.play();
+			videoPlayer.focus();
 		}
 	}
+	
 
 	containerPicture.appendChild(labelMedia);
 	containerPicture.appendChild(img);
@@ -235,7 +288,9 @@ function mediaLightbox(picture, mediaItems) {
 	modal.appendChild(close);
 	document.body.appendChild(modal);
 
-	displayMedia(currentIndex);
+	document.body.appendChild(modal);
+
+	displayMedia(index);
 
 	const handleKeyPress = (event) => {
 		if (event.key === "Escape") {
@@ -263,6 +318,8 @@ function mediaLightbox(picture, mediaItems) {
 	});
 
 	document.addEventListener("keydown", handleKeyPress);
+
+	img.focus();
 }
 
 // Initialise la page

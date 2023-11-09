@@ -100,6 +100,8 @@ export class PictureFactory {
 		like.textContent = likes;
 		like.setAttribute("class", "picture_likes");
 		iconHeart.setAttribute("class", "fa-regular fa-heart");
+		iconHeart.setAttribute("alt", "likes");
+		iconHeart.setAttribute("aria-label", "likes");													
 		iconHeart.setAttribute("tabindex", "0");
 		iconHeart.addEventListener("click", () => {
 			if (iconHeart.classList.contains("far")) {
