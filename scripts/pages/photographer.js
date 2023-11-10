@@ -164,6 +164,7 @@ function mediaLightbox(picture, mediaItems, index) {
 	close.addEventListener("click", () => {
 		modal.remove();
 		document.removeEventListener("keydown", handleKeyPress);
+		close.focus();
 	});
 
 	const containerMedia = document.createElement("div");
@@ -259,17 +260,21 @@ function mediaLightbox(picture, mediaItems, index) {
 			videoPlayer.style.display = "none";
 			img.setAttribute("src", `assets/images/${currentItem.src}`);
 			img.setAttribute("alt", currentItem.title);
+			img.setAttribute("aria-labelledby", `Image ${currentIndex + 1} sur ${mediaItems.length}: ${currentItem.title}`);
 			img.setAttribute("aria-label", `Voir l'image "${currentItem.title}"`);
 			img.setAttribute("title", currentItem.title);
 			img.setAttribute("role", "img");
+			img.setAttribute("tabindex", "0");
 		} else if (currentItem.type === "video") {
 			img.style.display = "none";
 			videoPlayer.style.display = "block";
 			videoPlayer.src = `assets/videos/${currentItem.src}`;
 			videoPlayer.setAttribute("alt", currentItem.title);
+			videoPlayer.setAttribute("aria-labelledby", `label-media ${currentIndex + 1} sur ${mediaItems.length}`);
 			videoPlayer.setAttribute("aria-label", `Voir la video "${currentItem.title}"`);
 			videoPlayer.setAttribute("title", currentItem.title);
 			videoPlayer.setAttribute("role", "video");
+			videoPlayer.setAttribute("tabindex", "0");
 			videoPlayer.play();
 			videoPlayer.focus();
 		}
@@ -283,6 +288,7 @@ function mediaLightbox(picture, mediaItems, index) {
 	containerMedia.appendChild(chevronLeft);
 	containerMedia.appendChild(containerPicture);
 	containerMedia.appendChild(chevronRight);
+	containerMedia.setAttribute("tabindex", "0");
 
 	modal.appendChild(containerMedia);
 	modal.appendChild(close);
